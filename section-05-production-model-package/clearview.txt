@@ -1,0 +1,50 @@
+🔹 What You Did
+You wrote code for research, then reorganized it for production.
+
+You split logic into separate files/modules.
+
+You added a tox file for testing across environments.
+
+You added config files for reproducibility.
+
+👉 That’s excellent project hygiene — but at this stage, your project is still just a directory of Python files. It’s usable locally, but not yet a distributable package.
+
+🔹 Why We Need pyproject.toml, setup.py, and MANIFEST.in
+These files are not like joblib or pickle (which serialize Python objects). Instead, they are metadata and build instructions that tell packaging tools how to turn your project into something installable with pip.
+
+pyproject.toml (modern standard)
+
+Declares the build system (setuptools, poetry, flit).
+
+Holds metadata (name, version, dependencies).
+
+Central config hub for tools.
+
+Required by pip when building from source.
+
+setup.py (legacy)
+
+A Python script that describes how to build/install the package.
+
+Still used in older projects, but mostly replaced by pyproject.toml.
+
+MANIFEST.in
+
+Ensures non-code files (README, configs, datasets) are included in the source distribution.
+
+Without it, only .py files get packaged.
+
+👉 Together, these files don’t “pickle” your project — they describe and build distribution archives (.whl and .tar.gz) that can be uploaded to PyPI or installed anywhere with pip.
+
+
+Why Not Just Use Python Code for Config?
+You asked earlier: “Why shouldn’t I just use Python code for configuration?”  
+Here’s why YAML (or TOML/JSON) is often preferred:
+
+Declarative & static → Easy to parse, no execution risks.
+
+Separation of concerns → Keeps config separate from logic.
+
+Environment flexibility → Different configs for dev, test, prod without changing code.
+
+Tool compatibility → Many tools (tox, CI/CD, Docker, Kubernetes) expect YAML/TOML configs.

@@ -1,0 +1,27 @@
+Why Docker Still Matters
+1. Environment Consistency
+Railway abstracts infrastructure, but your app still runs on their containers behind the scenes.
+
+Docker lets you define exactly what your runtime environment looks like (Python version, system libraries, OS packages).
+
+Without Docker, you rely on Railway’s defaults — which may differ from your local dev setup.
+
+2. Portability
+Docker images can run anywhere: Railway, AWS, GCP, Azure, or even on-prem servers.
+
+If you ever migrate away from Railway, Docker ensures your app runs identically elsewhere.
+
+3. Reproducibility
+CI/CD pipelines often use Docker to guarantee builds are reproducible.
+
+Instead of “works on my machine,” you get a frozen environment defined in a Dockerfile.
+
+4. Complex Dependencies
+If your app needs system-level libraries (e.g., libpq for Postgres, ffmpeg for media), Docker makes sure they’re baked into the image.
+
+Railway alone may not provide those unless you configure them manually.
+
+5. Security & Isolation
+Docker isolates your app from the host system.
+
+You can apply security patches by rebuilding the base image, independent of Railway’s environment.
