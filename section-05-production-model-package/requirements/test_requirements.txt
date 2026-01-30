@@ -2,3 +2,5 @@
 
 # testing requirements
 pytest>=7.2.0,<8.0.0
+#first version numb is major version which breaks the api
+#2nd numb is minor version which doesn't break the api and 3rd version is patches which is for bug fixes.
