@@ -1,0 +1,44 @@
+IaaS: Infrastucture as a Service
+here you manage os ,middleware and runtime 
+more than PaaS.
+
+AWS is cloud computing servixes has vast range of services.
+ECS it is elastic container service is a high scalable fast containder management service that makes it easy to run stop and manage docker container on a cluster.
+at center we have containere defination then outside task defination then service and then cluster.
+A task defination is  like a bluprint of your application lke dockerfile . in this step you will specify a task definition so amazon ECS knows which docker image to use for containers , how many containers to use in tak  and the sersouce allocationfor each container.Your entire app stack does not need to exist on single task defination and in most cases it should not.
+
+Ecs allows to runa dn maintain spedcidfeid instances of task deifination simulteneourlsy in an cluster clled services.ecs cluster is logincal grouping tasks
+AWS Fargate is a serverless compute engine for Amazon ECS that lets you run containers without managing servers or EC2 clusters. You simply define your container requirements (CPU, memory, networking, IAM policies), and Fargate provisions and scales the infrastructure automatically.
+ECS Launch Types Comparison
+Feature	Fargate	EC2 Launch Type
+Infrastructure Mgmt	Fully managed by AWS	User manages EC2 instances
+Scaling	Automatic	Manual or auto-scaling groups
+Isolation	Per-task isolation	Shared EC2 host resources
+Cost Model	Pay per vCPU & memory per second	Pay for EC2 instances (even if idle)
+Use Case	Simplified, serverless workloads	Custom control, specialized hardware
+
+why we use ecs ?
+containerization has transformed how we deploy software
+key options Kubernets,ECS, Docker swarm
+Kubernets is the container orchestratoin engine of choice but has most complex setup and mangemnet theers new place amazon ecs for Kubernetes EKS.
+
+CI/CD + Dockerization gets your app built, tested, and packaged into a container image. ECS (or another orchestrator) is about running and managing those containers in production at scale.
+
+so now in aws access management go to security and then in iam thne create a new group which is collection of permissiont now ecs admin thne atach some permission to group ec2containerservice then regitry and tehn iamreadonlyaccesst then create group
+
+now will create a user add user tehn username ecs admin user new tehn programatic accwess then next tehn atatch group then next then skip then create user and then create access key as we dont see same key again
+
+in order to setup ecs cluster we need aws cli so download it
+
+now cmd do aws configure then give access key and id of our newly created user and then default region name is us-east-1 then ouput format skip
+
+then aws iam list-users
+now we need to create a space where we install docker images so that other servies can use it so we use ecr and define url as udemy-ml-api
+ther will get URI whichll use it.
+now take docker images ans put then in ecr so we build it locally and then push it  so go to cmd and in out project then echo %PIP_exta_idnex_url%
+
+now docker build --build-arg PIP_EXTRA_INDEX_URL =%PIP_EXTRA_INDEX_URL% -t udemy-ml-api:latest .
+then docerk tag udemy-ml-api:latest %AWS_ACCOUNT_ID%.dkr.ecr.us-east-1.amazonaws.com/udemy-ml-api:latest
+fist section of uri is aws account id
+
+now check it by using docker images

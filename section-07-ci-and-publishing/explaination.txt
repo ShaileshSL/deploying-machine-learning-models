@@ -233,3 +233,14 @@ Echoing status messages.
 Returning exit codes for CI/CD pipelines.
 
 In publishmodel.sh we are building and uploading the packages to gemfury in build()
+
+
+# Create and switch to a new branch
+git checkout -b my-feature
+
+# Make changes and commit
+git add .
+git commit -m "Add new feature"
+
+# Push to GitHub
+git push origin my-feature
