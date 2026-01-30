@@ -1,0 +1,62 @@
+production code consideration:
+1.testability & maintainablity
+2.scalability & performance
+3.Reproducibility
+
+A package is collection of modules.
+
+tox: tox aims to automate and standardize testing in python 
+all our configurationis in tox ini file 
+in squre braks is virtual env we have default tox inv and 
+you don’t need to install or activate a virtual environment
+ before installing Tox, but you do need the capability (either
+  venv or virtualenv) available for Tox to function.
+we run it by tox -e then environment name
+
+only tox for all env list only we have to do write tox in comd pormpt
+after migration from tox3 to tox 4 we only have to add run i.e.
+tox run -e train or tox run -e run for tox -e run onlt
+
+why use yaml for config:we need to limit amount of power that config file have
+core.py file here we also using config file
+
+so here in test dir we have written testing code and it can be run by only pytest in terminal so in conftest file we have loaded the test data file and used it in other files
+
+def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
+so here we use * so that it tell we can only pass keyword args like datgrame=df not only df
+
+the pyproject.toml file is indeed used for packaging in modern Python projects, but its role is broader than just packaging.
+
+MANIFEST.in which files to be included and excluded in package Purpose: Specifies extra files to include in your source distribution (the .tar.gz file uploaded to PyPI).
+Why needed: By default, only Python source files are included. If you want to ship configs, docs, data files, or tests, you declare them here.
+in order to generate distribution archives
+
+pyproject.toml
+This file is the blueprint of your project.
+It declares:
+Build system (e.g., setuptools, poetry, flit)
+Metadata (name, version, author, dependencies)
+Tool configs (linters, formatters, test runners)
+Without this, tools like pip or build don’t know how to package your project.Once the recipe (pyproject.toml) is ready, you use a build tool (python -m build, poetry build, etc.) to actually produce the package files.
+
+These files are:
+Source distribution (sdist) → .tar.gz archive of your source code.
+Wheel distribution (wheel) → .whl binary archive, faster to install.
+These archives are what you upload to PyPI or share with others so they can install your project via pip
+py -m pip install --upgrade build to generate destribution archives
+then py -m build
+you’re telling Python’s build tool to package your project. The new files and folders that appear are the distribution archives of your project. Let’s break it down:
+📂 What Gets Created
+dist/ folder
+This is where the packaged output lives.
+Inside, you’ll see two main types of files:
+Source Distribution (sdist) → .tar.gz file
+Example: myproject-0.1.0.tar.gz
+Contains your raw source code + metadata.
+Think of it as a zip of your project that pip can build from scratch.
+Useful if someone wants to rebuild your project in their own environment.
+Built Distribution (wheel) → .whl file
+Example: myproject-0.1.0-py3-none-any.whl
+A pre-built, ready-to-install binary format.
+Much faster to install than source distributions.
+Wheels are the modern standard — pip prefers them.

@@ -1,0 +1,235 @@
+CI/CD stands for Continuous Integration and Continuous Delivery/Deployment. It’s a DevOps practice that automates the process of building, testing, and deploying applications, making software releases faster, safer, and more reliable.
+
+Continuous integration means build(building dependencies availble in requirement.txt), test and merge then continuouse Delivery means automatically release to repository then continuouse Deployment means automatically deploy to production
+
+Why CI/CD Matters
+Speed: Enables multiple releases per day instead of monthly/quarterly cycles.
+
+Quality: Automated testing reduces bugs and regressions.
+
+Collaboration: Developers, testers, and operations teams work in sync.
+
+Reliability: Rollbacks and monitoring are built into pipelines.
+
+DevOps Backbone: CI/CD is central to agile and DevOps workflows.
+
+🔹 CI/CD Pipeline Example
+Stage	What Happens
+Code Commit	Developer pushes code to Git repository
+Build	Code compiled, dependencies installed
+Test	Automated unit/integration tests run
+Package	Application packaged into container/artifact
+Deploy	Delivered to staging or production environment
+Monitor	Logs, metrics, and alerts track performance and errors
+
+###eg CircleCI, Jenkins , Travis CI ,bamboo
+
+so will use circleci
+1)automate the training , testing and deployment  bfore we did tox -e train to train and tehn we do railway up --detach to deploying
+so we need to add this commands to circleci config to automate it.
+so for circleci we need to add environment variables so we have circle ci config file in our project
+If your app depends on a trained model, Railway cannot magically train it for you unless you’ve scripted training inside the deployment process.
+
+Running tox -e train first ensures the model artifacts exist locally and are included in the deployment bundle.
+
+If you skip it, Railway may deploy an app that starts but fails because the trained files are missing.
+
+In software and machine learning workflows, an artifact is any file or bundle of files produced during a build, training, or packaging process that is later used by deployment.
+Think of it as the output of your training/build step that your deployed app needs to function.
+
+Artifacts can vary depending on the project type:
+
+Machine Learning Projects
+
+Trained model weights (.pkl, .h5, .pt, .onnx)
+
+Preprocessed datasets or embeddings
+
+Config files (.yaml, .json) describing hyperparameters
+
+Logs or metrics from training runs
+
+Python/Software Projects
+
+Source distribution packages (.tar.gz from python setup.py sdist or tox)
+
+Wheel files (.whl) for installation
+
+Compiled binaries or libraries
+
+Docker images or container layers
+
+Deployment Bundles
+
+Compressed archives of your project (.tar.gz, .zip)
+
+Static assets (HTML, CSS, JS, images)
+
+Environment manifests (requirements.txt, pyproject.toml)
+
+Run tox -e train → produces model.tar.gz containing trained weights.
+
+Run railway up --detach → deploys your app, which loads model.tar.gz to serve predictions.
+
+so now will know .circleci dire where will find config.yml file which is in our base delploying machine learning model s dire
+as it requirs to be in repo
+
+How CI/CD Environments Work
+Ephemeral containers/VMs:  
+Every job in CircleCI or Railway runs inside a fresh container or virtual machine.
+
+Clean start:  
+At the beginning of the job, the environment is empty — no files, no cached installs, no leftover data from your laptop.
+
+Automatic cleanup:  
+When the job finishes (tests pass, app deployed), the container is destroyed. All files, packages, and artifacts inside it are deleted.
+CircleCI runs these steps on every commit/push in a clean environment.
+
+It doesn’t know you already ran them locally — CI/CD servers start fresh each time.
+
+That’s why the config repeats installation, testing, and deployment steps.
+
+Local folder:  
+You already have a .tar.gz file (artifact) from your last tox -e train run. That’s fine for local testing.
+
+CI/CD pipeline:  
+Every time CircleCI runs, it starts in a clean environment. It doesn’t see your local .tar.gz file.
+
+If your pipeline includes a step to build or train, it will create the .tar.gz again.
+
+If the file already exists in the repo, the pipeline may overwrite it with a fresh build.
+
+What the .tar.gz File Is
+In Python projects, .tar.gz is usually a source distribution (sdist) created when you package your code (e.g., via tox, setup.py, or build).
+
+In ML workflows, it can also be a compressed archive of trained artifacts (like model weights or datasets).
+
+So it’s essentially a packaged output of your build or training step.
+When you run tox -e train, the environment is usually configured to package your project after training. That’s why you see two files being created — they’re standard Python packaging outputs. Let’s break them down:
+
+🔹 The Two Files You’re Seeing
+Typically, they are:
+
+Source Distribution (.tar.gz)
+
+A compressed archive of your project’s source code.
+
+Contains:
+
+All .py files
+
+Metadata (setup.py, pyproject.toml, setup.cfg)
+
+Dependency lists (requirements.txt)
+
+Docs/configs
+
+Purpose: lets others (or deployment systems like Railway) build your project from source.
+
+Example: house-prices-api-0.1.0.tar.gz
+
+Wheel File (.whl)
+
+A built distribution (binary package).
+
+Faster to install than source distribution because it doesn’t need to compile code.
+
+Purpose: used by pip install directly for deployment or installation.
+
+Example: house_prices_api-0.1.0-py3-none-any.whl
+
+🔹 Why Both Are Created
+Redundancy: Some systems prefer source distributions, others prefer wheels.
+
+Compatibility:
+
+.tar.gz → ensures anyone can rebuild from source.
+
+.whl → ensures fast installs in environments like CI/CD or Railway.
+
+so we need to assign env vars in circle ci as in project settings
+so we used kaggle username and kaggle key as passenv in our tox.ini file 
+as if our data is large then we dont need to download it.and then assign as above
+
+now will automate artifacts buildingg  like tox -e train and py -m build to get those tar and whl files under dit/
+so we neeed python private indexx servers 
+Python private index server is your internal PyPI, giving you control over package distribution, security, and reproducibility.
+Security: Prevents accidental use of unverified public packages; only trusted packages are available.
+
+Compliance: Some organizations need to host packages internally due to licensing or regulatory requirements.
+
+Reliability: Avoids downtime or dependency issues if PyPI is unavailable.
+
+Customization: You can publish internal libraries that shouldn’t be shared publicly.
+
+Gemfury is a cloud‑hosted private package repository service that lets you securely store and distribute your own libraries (Python, Ruby, npm, NuGet, Maven, etc.) without running your own server.
+A private package repository solves problems that public registries (like PyPI, npm, RubyGems) can’t address for organizations:
+
+Internal Libraries: Many teams build reusable Python modules or shared code that shouldn’t be published publicly. A private index gives you a secure way to distribute them.
+
+Access Control: You decide who can install or update packages. Public registries don’t offer fine‑grained permissions.
+
+Security & Compliance: Prevents accidental use of unverified public packages, and ensures only vetted dependencies are used.
+
+Reliability: If PyPI or npm goes down, your builds won’t break because you have a controlled mirror.
+
+Version Management: You can lock versions and ensure reproducibility across environments
+
+so we have added thecode in requirement.txt file in section 8 as --extra-index-url 
+PyPI (Python Package Index) is the official repository for Python packages. It’s where developers publish and share their Python libraries, and where tools like pip fetch packages from when you install them.
+
+🔑 Key Points
+Central Repository: PyPI is the default source for Python packages. When you run:
+
+bash
+pip install requests
+pip connects to PyPI to download the requests library.
+
+we also need to add pip extra index url and gemfury push url
+pyproject.toml is one of the most important files in modern Python packaging. It was introduced by PEP 518 to standardize how Python projects declare their build system requirements.
+
+so to publish sensitive intellictual property will use private index server gemfury go to tokens and get full acess tokens now we have format for secrete repositroy url so in publish_model.sh file will need to provide gemfury url so in build  we have done it
+curl -f to upload file to our private repo
+so in config.yml file we have tags only filter is only when we create a tag in github itll trigger
+so in tox.ini in fetch_data we have commands where we have given our datasets urls
+
+The number you store in the VERSION file is the current release version of your project, chosen according to your versioning policy (usually Semantic Versioning).
+so as we do login to our railway app we also need to authenticate in ci pipleine so we need railway tocken so go to setting we hve tokens in project token and copy value of token and in cerciledi environment var we hve to assign it
+publish_model.sh script. While the exact contents depend on the project or framework, generally such a script is a shell script used to automate packaging and deployment of a machine learning model.
+
+🔑 Typical Contents of publish_model.sh
+A script like this usually contains:
+
+Environment Setup
+
+Activating the correct Python environment or virtualenv.
+
+Exporting environment variables (e.g., MODEL_VERSION, REGISTRY_URL).
+
+Model Packaging
+
+Converting the trained model into a portable format (e.g., .pkl, .onnx, .tar.gz).
+
+Creating metadata files (VERSION, requirements.txt, pyproject.toml).
+
+Validation
+
+Running tests to ensure the model loads and predicts correctly.
+
+Checking dependencies.
+
+Publishing Step
+
+Uploading the model artifact to a model registry (like MLflow, S3, Azure ML, Hugging Face Hub).
+
+Or pushing to a package index (PyPI, private PyPI, Gemfury).
+
+Sometimes tagging the release with Git.
+
+Logging & Notifications
+
+Echoing status messages.
+
+Returning exit codes for CI/CD pipelines.
+
+In publishmodel.sh we are building and uploading the packages to gemfury in build()

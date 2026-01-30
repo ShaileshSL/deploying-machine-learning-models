@@ -1,0 +1,11 @@
+Pytest is a popular, open-source testing framework for Python that simplifies the process of writing, organizing, and executing various types of software tests, including unit, functional, and integration tests
+
+pytest fixtures: explicit modular and scalable
+
+The assert keyword in Python is used as a debugging aid: it tests whether a condition is true, and if not, it immediately stops the program by raising an AssertionError
+
+✅ So by default, filenames must include test (either at the start or end), but you can override this behavior with configuration.
+Test classes: Must start with Test and contain test methods starting with test_
+In pytest, the conftest.py file is a special configuration file that allows you to share fixtures, hooks, and configuration across multiple test files without needing to import them explicitly.
+In pytest, fixtures are reusable setup and teardown functions that provide a clean way to prepare test data, resources, or environments before running tests. They are defined using the @pytest.fixture decorator and can be injected into test functions simply by naming them as parameters.
+pytest.mark.parametrize :It’s one of the most powerful tools in pytest because it lets you run the same test function with multiple sets of input data automatically.Allows you to parameterize tests (run them multiple times with different arguments).
