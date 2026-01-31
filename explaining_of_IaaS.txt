@@ -42,3 +42,9 @@ then docerk tag udemy-ml-api:latest %AWS_ACCOUNT_ID%.dkr.ecr.us-east-1.amazonaws
 fist section of uri is aws account id
 
 now check it by using docker images
+
+now login to ecr by aws ecr get-login --no-include email --region us-east-1
+will get docker login command that past it again and run it login will succedd
+
+now push it by 
+docker push udemy-ml-api:latest %AWS_ACCOUNT_ID%.dkr.ecr.us-east-1.amazonaws.com/udemy-ml-api:latest
