@@ -48,3 +48,16 @@ will get docker login command that past it again and run it login will succedd
 
 now push it by 
 docker push udemy-ml-api:latest %AWS_ACCOUNT_ID%.dkr.ecr.us-east-1.amazonaws.com/udemy-ml-api:latest
+
+now creating the ecs cluster by fargate launch method which require less configure
+so go to ecr then in our repo cpoy latest image uri then go to ecsthen clusters and get started 
+create cutom defination then image pase url then then hard linit of mem useage 128 then port 
+mapping 5000 then advance config then in environ ment var section set PIP_exta_idnex_url  and gemfury url
+https://somthing.io/ourname/
+paste it her and update then next then next cluter ame ml-api-cluster then next and review and then 
+then create, now created cluster now go to view service and select tasks it would be runnig now go to task so in logs we can see unikarn started success go to pulic ip and paste it in browere then in give port 5000/health
+updating the containers in clusters
+now go to our clustr then thers service runnign 
+aws ecs update-service --cluster ml-api-cluster --service custom-servicename --task-defination first-run-task-definitionname --force-new-deployment
+
+so in that service the additional task will be provisioned
