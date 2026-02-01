@@ -61,3 +61,36 @@ now go to our clustr then thers service runnign
 aws ecs update-service --cluster ml-api-cluster --service custom-servicename --task-defination first-run-task-definitionname --force-new-deployment
 
 so in that service the additional task will be provisioned
+and we can use it by publi ip
+
+if we let it runnig then it will make cost if our freee premium empty so delete it
+
+deploying to ecs using ci pipeline
+we have added section 12  in config.yml
+so we need to run to circle ci so we need  to have env to circle ci as AWS_ACCESS_KEY_ID THEN ACCOUTN_ID THEN AWS DEFAULT REGION THN SECRETE ACCESS key
+
+Without ECS: You’d have to manually manage servers, networking, scaling, and container orchestration.
+
+Without CI/CD: You’d have to manually build, push, and deploy containers each time — error-prone and slow.
+
+With ECS + CI/CD: You get a robust, automated, scalable deployment workflow where code changes flow smoothly from Git commits to production containers.
+
+git add --all
+This stages all changes in your working directory:
+
+New files
+
+Modified files
+
+Deleted files
+
+Without --all, you’d have to specify files individually (e.g., git add file1.py file2.py).
+
+It ensures nothing is left behind accidentally — every tracked change is prepared for the next commit.
+
+🔹 git commit -m "something write"
+This takes the staged changes (from git add) and records them in the repository’s history.
+
+The -m flag lets you attach a commit message directly from the command line.
+
+The commit message is important because it explains why the change was made, making collaboration and debugging easier later.
